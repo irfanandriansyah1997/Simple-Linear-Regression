@@ -1,0 +1,24 @@
+#!/bin/bash
+VENVBIN=./venv/bin
+NODEBIN=./node_modules/.bin
+PYTHON=$(VENVBIN)/python
+PIP=$(VENVBIN)/pip
+PYLINT=$(VENVBIN)/pylint
+
+all: env lint test
+
+env:
+	virtualenv -p python3 venv
+	$(PIP) install --upgrade pip
+	$(PIP) install -r requirements.txt
+
+dev:
+	source venv/bin/activate
+
+clean:
+	find . -name "*.pyc" -exec rm -rf {} \;
+	rm -rf venv
+	rm -rf vendored
+
+lint:
+	$(PYLINT) --ignore=venv *
